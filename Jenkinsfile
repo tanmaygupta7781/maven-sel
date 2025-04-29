@@ -2,6 +2,7 @@ pipeline {
     agent any  // Use any available agent
 
     tools {
+        maven 'Maven'
         gradle 'Gradle'  // Ensure this matches the name configured in Jenkins
         jdk 'JDK'
     }
