@@ -12,6 +12,16 @@ pipeline {
                 git branch: 'master', url: 'https://github.com/tanmaygupta7781/maven-sel.git'
             }
         }
+        stage('Clean Previous Chrome Sessions') {
+            steps {
+                sh '''
+                    echo "Cleaning up old Chrome sessions..."
+                    pkill chrome || true
+                    pkill chromedriver || true
+                    rm -rf /tmp/profile_* || true
+                '''
+            }
+        }
 
         stage('Build') {
             steps {
