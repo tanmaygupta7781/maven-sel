@@ -41,6 +41,23 @@
 <target>1.7</target>
 </configuration>
 </plugin>
+        <!-- Other plugins -->
+
+        <!-- Maven Shade Plugin to package dependencies into the JAR -->
+        <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-shade-plugin</artifactId>
+            <version>3.2.1</version>
+            <executions>
+                <execution>
+                    <phase>package</phase>
+                    <goals>
+                        <goal>shade</goal>
+                    </goals>
+                </execution>
+            </executions>
+        </plugin>
+
 <!-- Example: Maven Surefire Plugin to run tests -->
 <plugin>
 <groupId>org.apache.maven.plugins</groupId>
