@@ -1,57 +1,43 @@
 pipeline {
-    agent any  // Use any available agent
+    agent any
 
     tools {
-        maven 'Maven'
-        gradle 'Gradle'  // Ensure this matches the name configured in Jenkins
+        maven 'Maven'  // Replace with actual tool names from Jenkins configuration
         jdk 'JDK'
     }
+
     stages {
         stage('Checkout') {
             steps {
-                git branch: 'master', url: 'https://github.com/tanmaygupta7781/maven-sel.git'
-            }
-        }
-        stage('Clean Previous Chrome Sessions') {
-            steps {
-                sh '''
-                    echo "Cleaning up old Chrome sessions..."
-                    pkill chrome || true
-                    pkill chromedriver || true
-                    rm -rf /tmp/profile_* || true
-                '''
+                checkout scm
             }
         }
 
         stage('Build') {
             steps {
-                sh 'mvn clean package'  // Run Maven build
+                sh 'mvn clean package'
             }
         }
 
-       stage('Test') {
-           steps {
-               sh 'mvn compile'  // Run unit tests
-           }
-        }
-
-              
-        stage('Run Application') {
+        stage('Test') {
             steps {
-                // Start the JAR application
-                sh 'java -jar target/maven-selapp-1.0-SNAPSHOT.jar'
+                sh 'mvn test'
             }
         }
 
-        
+        stage('Archive Artifacts') {
+            steps {
+                archiveArtifacts artifacts: 'target/*.jar', fingerprint: true
+            }
+        }
     }
 
     post {
         success {
-            echo 'Build and deployment successful!'
+            echo 'Pipeline completed successfully!'
         }
         failure {
-            echo 'Build failed!'
+            echo 'Pipeline failed!'
         }
     }
 }
